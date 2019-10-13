@@ -1,6 +1,9 @@
 # Sequences
 
-A collection of sequences and some tips on how to identify them
+A collection of sequences and some tips on how to identify them. 
+
+Below we go through some "learnable" sequences. If you just want some trivia ones for fun,
+check out [The Online Encyclopedia of Integer Sequencess](https://oeis.org/).
 
 ## Techniques
 
