@@ -14,9 +14,9 @@ give some of the biggest trading firms your best bet.
 
 ## Table of Contents
 
-  1. [Math](questions/math.md)
-  2. [Brain Teasers](questions/brain.md)
-  3. [Probability](questions/prob.md)
-  4. [Games and Betting](questions/games.md)
+  1. [Math](chapters/math.md)
+  2. [Brain Teasers](chapters/brain.md)
+  3. [Probability](chapters/prob.md)
+  4. [Games and Betting](chapters/games.md)
   5. [Links and resources](resources/links.md)
   6. [The Interview Process](resources/interview.md)
