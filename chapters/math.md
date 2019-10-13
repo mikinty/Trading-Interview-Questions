@@ -10,6 +10,19 @@ A good way to practice your basic arithmetic skills is to visit [zetamac](https:
 prompts you simple math problems quickly. Your goal is to answer as many problems as you can quickly. Notice that
 because they don't penalize you for inputting wrong answers, try to not guess your answers.
 
+## Sequences and Patterns
+
+Trading companies love testing your ability to know sequences. Some of these sequences are technically challenging,
+requiring you to compute things. Other times, it's just knowing some phrase in English (sorry non-native speakers)
+
+- 1, 1, 2, 3, 5, 8, 13, (Fibonacci)
+- 1, 2, 4, 8, 16 (2^n)
+- 1, 6, 21, 66 (3x_{n-1}+3)
+- F, S, T, F, F, S, S, E, N, T (1st, 2nd, 3rd, ...)
+- M, V, E, M, J, S, U, N, P (Mercury, Venus, Earth, Mars, ...)
+
+There are many, so check out [sequences](./sequences.md) for more.
+
 ## Number Sense
 
 TODO: talk about how to learn some tricks for arithmetic, and estimating problems
