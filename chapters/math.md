@@ -47,7 +47,7 @@ requiring you to compute things. Other times, it's just knowing some phrase in E
 - F, S, T, F, F, S, S, E, N, T (1st, 2nd, 3rd, ...)
 - M, V, E, M, J, S, U, N, P (Mercury, Venus, Earth, Mars, ...)
 
-There are many, so check out [sequences](./sequences.md) for more.
+There are many, so check out [sequences](../appendix/sequences.md) for more.
 
 ## Fermi Questions
 
