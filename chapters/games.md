@@ -1,5 +1,11 @@
 # How to Not Lose Games
 
-Introduce some games
+Games are about winning, but what comes along winning are
 
-Work through an example of a game, while asking questions like EV, how much to bet, etc
+1. Strategy
+2. Evaluation
+3. Risk assessment
+
+## A Game
+
+Estimate the sum of cards in play.
