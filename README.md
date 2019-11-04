@@ -7,7 +7,7 @@ Unfortunately, I have not really found any complete tutorials online for how to 
 for quant trading interviews. My guess is that a lot of people who pass these interviews
 already have the sufficient background for the task, and also that if these guides existed,
 then people who weren't the super "talented ones" would already be saturating the highly-coveted
-trading jobs and -- then trading would no longer be put on such a high pedestal.
+trading jobs and -- then trading would no longer be on such a high pedestal.
 
 But hey, I want more people to have opportunities, so here is my attempt to help you
 give some of the biggest trading firms your best bet.
