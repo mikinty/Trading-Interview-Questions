@@ -61,7 +61,10 @@ then you've encountered a Fermi question. The legend goes, that scientist [Enric
 once
 
 ```text
-observed the Trinity test on 16 July 1945, and conducted an experiment to estimate the bomb's yield by dropping strips of paper into the blast wave. He paced off the distance they were blown by the explosion, and calculated the yield as ten kilotons of TNT; the actual yield was about 18.6 kilotons.
+observed the Trinity test on 16 July 1945, and conducted an experiment to
+estimate the bomb's yield by dropping strips of paper into the blast wave.
+He paced off the distance they were blown by the explosion, and calculated
+the yield as ten kilotons of TNT; the actual yield was about 18.6 kilotons.
 ```
 
 Fermi questions are about common sense, and how you can utilize what you can know to make seemingly unsurmountable questions
@@ -82,20 +85,22 @@ what competition math is about, and looking to practice or learn these skills.
 ### Nationally followed
 
 This is the path that almost every aspiring mathematician takes to represent his/her country at the International Math Olympiad (IMO).
-These exams are in increasing order of difficulty.
+These exams are in increasing order of difficulty. If you want to learn more about preparing these exams, I would highly recommend
+checking out the resources and forums at [The Art of Problem Solving](https://artofproblemsolving.com/) (AoPS). Most of the links below are going to be from AoPS.
 
-1. __MathCounts__: A competition for middle schoolers that usually serves of the first stepping stone for kids to enter competition math. 
-This exam is administered at the regional, state, and national levels, and comes in a variety of exam styles, 
+1. [MathCounts](https://artofproblemsolving.com/wiki/index.php/MATHCOUNTS): A competition for middle schoolers that usually serves of the first stepping stone for kids to enter competition math.
+This exam is administered at the regional, state, and national levels, and comes in a variety of exam styles,
 including multiple choice (Sprint), short answer (Target), team based, and even head-to-head speed (Countdown).
-2. __AMC 8/10/12__: A multiple choice based exam. Each exam is for a different demographic of students, 
+This competition is lots of fun and I highly recommend it if you have kids interested in math or are a youngster for whatever reason browsing this guide (good for you!).
+2. [AMC 8/10/12](https://artofproblemsolving.com/wiki/index.php/AMC_Problems_and_Solutions): A multiple choice based exam. Each exam is for a different demographic of students, 
 e.g. AMC 8 is for 8th graders and under, and each exam has a different cutoff. The exams are used as qualification
 to take the AIME.
-3. __AIME__: A short answer based exam. Selection test for the US Math Olympiad.
-4. __USA(J)MO__: Selection test for the Math Olympiad Program.
-5. __TST__: Selection test taken at MOP to determine the IMO team.
-6. __IMO__: Grand finale.
+3. [AIME](https://artofproblemsolving.com/wiki/index.php/AIME_Problems_and_Solutions): A short answer based exam. Selection test for the US Math Olympiad.
+4. [USA(J)MO](https://artofproblemsolving.com/wiki/index.php/USAMO_Problems_and_Solutions): Selection test for the Math Olympiad Program.
+5. [MOP](https://artofproblemsolving.com/wiki/index.php/Mathematical_Olympiad_Summer_Program): The actual test is called TST, but it's a selection test taken at MOP to determine the IMO team.
+6. [IMO](https://artofproblemsolving.com/wiki/index.php/IMO_Problems_and_Solutions): Grand finale.
 
-In college for undergraduates, there is a test called the Putnam, a proof-based test, that is highly regarded.
+In college for undergraduates, there is a test called the [Putnam](https://artofproblemsolving.com/wiki/index.php/William_Lowell_Putnam_Mathematical_Competition), a proof-based test, that is highly regarded.
 Scoring in the top 500 is considered a strong achievement.
 
 ### Well-known competitions
