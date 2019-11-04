@@ -50,3 +50,20 @@ strive to not be too risky as well, because stretching yourself into too much ri
 almost always a losing strategy.
 
 ## Orderbooks
+
+An orderbook is exactly what the name suggests -- a book of open orders for some asset.
+Take the following orderbook
+
+| Price | Volume |
+|:-----:|:------:|
+|105| 40000|
+|104| 5000|
+|103| 10000|
+|102| 1000|
+|101| 1000|
+|---|---|
+|---|---|
+|100| 5000|
+|99|  1000|
+|98| 10000|
+|97| 100000|
