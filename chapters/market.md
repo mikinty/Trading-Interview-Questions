@@ -66,3 +66,37 @@ Take the following orderbook
 |99|  1000|
 |98| 10000|
 |97| 100000|
+
+## Making Markets
+
+As a trader, you're trying to make money in the market.
+One of the most fundamental skills is being able to "make markets,"
+which is creating bids and asks that are favorable to you.
+Favorable means making money, but determining those bid and ask
+prices is not too easy. Finding a good bid and ask spread is very important, because it means you have found a spot where you can 
+buy low and sell high.
+
+Some examples of questions:
+
+- A typical example of such a question is
+```text
+Make a market for the temperature outside right now
+```
+
+- You have to give a buy-ask spread. The market will adjust its prices based on your actions. Here, the idea is that
+  - If your bid is too high, i.e. greater than the lowest ask,
+    the order will execute immediately since you fill the ask
+  - If your ask is too low, i.e. lower than the highest bid,
+    the order will execute immediately since you fill the bid
+  - You want to find the market equilibrium as quickly as possible.
+    The intuition here is that if your order gets filled too quickly
+    for a bid, then you might want to lower your bid, and similarly
+    for your ask.
+
+- Another market making question is similar to above, but you are not
+told how the market responds. A question might be something like
+```text
+Let the population of Russia be R and let the population of Estonia be E.
+
+We are trading the spread R - E. If you have 5 buys, what orders to you place?
+```
