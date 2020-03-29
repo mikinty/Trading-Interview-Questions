@@ -20,12 +20,18 @@ The following table should give a sense of where you are. This is based off of a
 
 | Score | Comments |
 |-------|:---------|
-|0-9    |You can do a lot better|
-|10-15  |Below average|
-|15-24  |Average   |
-|25-35  |Above average|
-|35-44  |Pretty good|
+|0-9    |You can do a lot better        |
+|10-15  |Below average                  |
+|15-24  |Average                        |
+|25-35  |Above average                  |
+|35-44  |Pretty good                    |
 |45+    |Should be set for any interview|
+
+Some companies like Akuna like to ask questions like
+```What is 17.5% of 354```,
+expect you to do it mentally and explain your method.
+They also like to ask you a series of these questions
+and then test if you can recall the questions they asked you.
 
 ## Number Sense
 
@@ -92,7 +98,7 @@ checking out the resources and forums at [The Art of Problem Solving](https://ar
 This exam is administered at the regional, state, and national levels, and comes in a variety of exam styles,
 including multiple choice (Sprint), short answer (Target), team based, and even head-to-head speed (Countdown).
 This competition is lots of fun and I highly recommend it if you have kids interested in math or are a youngster for whatever reason browsing this guide (good for you!).
-2. [AMC 8/10/12](https://artofproblemsolving.com/wiki/index.php/AMC_Problems_and_Solutions): A multiple choice based exam. Each exam is for a different demographic of students, 
+2. [AMC 8/10/12](https://artofproblemsolving.com/wiki/index.php/AMC_Problems_and_Solutions): A multiple choice based exam. Each exam is for a different demographic of students,
 e.g. AMC 8 is for 8th graders and under, and each exam has a different cutoff. The exams are used as qualification
 to take the AIME.
 3. [AIME](https://artofproblemsolving.com/wiki/index.php/AIME_Problems_and_Solutions): A short answer based exam. Selection test for the US Math Olympiad.
