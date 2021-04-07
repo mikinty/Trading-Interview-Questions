@@ -12,7 +12,7 @@ because they don't penalize you for inputting wrong answers, try to not guess yo
 
 One thing I hope you notice is that as you try to get faster at these simple math problems, you will start noticing
 tricks. Of course, you can just search how to do certain tricks, e.g. what the *11 trick is or how to add something
-in the form of 97 + 45 = (100 - 3) + 45 = 143, but I would highly recommend trying to figure out what tricks
+in the form of 97 + 45 = (100 - 3) + 45 = 142, but I would highly recommend trying to figure out what tricks
 work for _you_. If you find that you aren't improving anymore, maybe then it might be worth to search up some
 arithmetic tricks.
 
