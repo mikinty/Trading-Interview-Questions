@@ -23,7 +23,7 @@ Buy 100 shares of SPY at $400 by 12/1/2020
 Let's say I have this contract, and on 9/1/2020, SPY reaches a price of $432. Because I have
 this contract, I now have the right to buy SPY at $400 -- that's FREE MONEY! So because
 I own this contract, I have the right to SPY at some predetermined price. On the other hand,
-if SPY never reaches $400 at any time before 12/1/2020, then the contract is useless and I 
+if SPY never reaches $400 at any time before 12/1/2020, then the contract is useless and I
 can't do anything with it. This _potential_ to purchase SPY is what gives this contract value.
 One very important properties of a contract is figuring out how much it is worth, which depends
 on a variety of factors, mostly related to risk and potential profits.
@@ -67,13 +67,27 @@ Take the following orderbook
 |98| 10000|
 |97| 100000|
 
+An orderbook expresses for each price, the number of people that are either buying or selling that price. The way you can tell if a price corresponds to a buy or sell price is to remember that
+
+```text
+Buy low, sell high
+```
+
+meaning that lower prices indicate buy orders, and higher prices indicate sell orders.
+
+To equate this to something you might already do in real life, when you put in a limit order, your order will go to one of these orderbooks for a stock.
+
+There are many analyses done about orderbooks, one common technique is called overflow, which essentially looks at the distribution of orders, and figures out what that might mean for a stock price. For example, traders like to figure out where support and resistance levels are based on where orders are parked in the book. E.g. if there is a large buy block at 97, you can say 97 is a support price.
+
+For interviews, you don't have to know much about an orderbook other than what it is, and they will most likely explain it to you. But it's useful to have some background so you don't spend any time figuring out how an orderbook works.
+
 ## Making Markets
 
 As a trader, you're trying to make money in the market.
 One of the most fundamental skills is being able to "make markets,"
 which is creating bids and asks that are favorable to you.
 Favorable means making money, but determining those bid and ask
-prices is not too easy. Finding a good bid and ask spread is very important, because it means you have found a spot where you can 
+prices is not too easy. Finding a good bid and ask spread is very important, because it means you have found a spot where you can
 buy low and sell high.
 
 Some examples of questions:
