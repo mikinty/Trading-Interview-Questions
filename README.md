@@ -12,6 +12,8 @@ trading jobs and -- then trading would no longer be on such a high pedestal.
 But hey, I want more people to have opportunities, so here is my attempt to help you
 give some of the biggest trading firms your best bet.
 
+If I helped you ace your interviews or you wanna help me out, you can [support me here](https://www.buymeacoffee.com/mikinty)!
+
 ## Table of Contents
 
   1. [Math](chapters/math.md)
