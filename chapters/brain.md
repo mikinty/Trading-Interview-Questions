@@ -26,3 +26,5 @@ asked one of them.
 - You have a bag of 100 strings. You reach in the bag, grab two ends of
   strings, and tie them in a loop. You keep on doing this until there are no
   ends left. How many loops do you expect to end up with on average?
+  
+- There are 100 prisoners. There are 100 boxes with random numbers from 1-100 in them, one each. Each prisoner has a chance to go in the room and try to find their number. If they do so, they will make it out alive. Otherwise, they are killed on the spot. The prisoners are allowed to plan a strategy before they go in, but surviving prisoners will not be able to tell the other prisoners what they have seen. What is the best strategy for going about saving as many prisoners as possible, and how many prisoners can you save?
