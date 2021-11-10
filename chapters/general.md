@@ -12,3 +12,7 @@ of your personality, and see if you can survive in the boxing arena that is Wall
    - Also explain your reasoning for each scenario
 
 2. If you have good grades, the firm will likely ask you why you do. Similarly, they will ask you what your motivations are in life.
+
+3. There are a lot of smart people at hedge funds; think IMO medalists, research competition winners, mega-IQ brain people... What makes you stand out as someone that the firm wants to hire?
+
+4. If you had a lot of money, what would you do with it?
