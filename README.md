@@ -24,3 +24,7 @@ If I helped you ace your interviews or you wanna help me out, you can [support m
   6. [General Questions](chapters/general.md)
   7. [Links and Resources](resources/links.md)
   8. [The Interview Process](resources/interview.md)
+
+## If you decide to trade
+
+I'm writing a curriculum for learning trading basics, from fundamental analysis to psychology, check it out here: https://github.com/mikinty/Trading-Curriculum
