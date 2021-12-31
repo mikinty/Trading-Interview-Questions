@@ -20,6 +20,20 @@ There are lots of games that use cards and dice to ask probabilities, for exampl
 
 > If I draw 5 random cards from a standard deck, what is the probability that I draw a full house combination?
 
+## Expected Value
+
+Also called "EV" (pronounced Eevee like the Pokemon, also a word used as a meme among traders), expected value has a variety of meanings, but in general it has to do with a weighted probability sum of something. The formula for EV is
+
+> E[event] = P[event_1] * event_1 + P[event_2] * event_2 + ... = \sum_{e \in possible events} P[e] * e
+
+The reason people care about EV is that whenever you play a game, every outcome has some sort of chance attached to it, and some sort of reward. This number is useful for gauging the utility or how valuable certain courses of action are. For example, lottery tickets are known to have negative EV, because if you calculate the chances of winning and multiply them with profits, the expected profits will be less than how much it costs to buy the lotto. Therefore, this negative EV gives you an idea of the magnitude of how bad lotto tickets are.
+
+In the trading world, a trade has some sort of EV. In general, traders want to steer towards positive EV actions and avoid negative EV actions. This way, over time, the trader will make money. Firms want their candidates to be able to accurately and quickly assess EV so they have a good chance of making the right choices on the job.
+
+### Examples
+
+- A classic question would be something like "Someone offers to pay you the product of a dice roll and the number value of a card drawn from a standard deck. How much should this person be charging for this game at least?"
+
 ## Recursion
 
 If you've never seen these problems, they seem almost impossible, because
