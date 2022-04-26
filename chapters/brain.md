@@ -28,3 +28,7 @@ asked one of them.
   ends left. How many loops do you expect to end up with on average?
   
 - There are 100 prisoners. There are 100 boxes with random numbers from 1-100 in them, one each. Each prisoner has a chance to go in the room and try to find their number. If they do so, they will make it out alive. Otherwise, they are killed on the spot. The prisoners are allowed to plan a strategy before they go in, but surviving prisoners will not be able to tell the other prisoners what they have seen. What is the best strategy for going about saving as many prisoners as possible, and how many prisoners can you save?
+
+- [Prisoner, Chess and Coins Problem](https://www.cantorsparadise.com/a-fascinating-prisoners-puzzle-be874032f43e)
+
+- Suppose we have some critter on the number line. It has two starting params, x, which is some integer that represents where the critter starts at time t = 0, and y, which is how far, and in what direction the critter moves each \delta t = 1. So for example, if a critter has x=4, y=-1, the critter will have positions 4, 3, 2, 1, ... The question is, can we devise an algorithm to find where this critter is, eventually?
