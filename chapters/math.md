@@ -42,6 +42,8 @@ an ancient website for sure, but if you scroll down to the bottom of this page y
 number sense worksheets. I think number sense is a natural extension from the simple arithmetic
 you can practice from zetamac.
 
+Another great guide for number sense can be found at [http://bowenpeters.weebly.com/uploads/8/1/1/9/8119969/numbersense.pdf](http://bowenpeters.weebly.com/uploads/8/1/1/9/8119969/numbersense.pdf).
+
 ## Sequences and Patterns
 
 Trading companies love testing your ability to know sequences. Some of these sequences are technically challenging,
