@@ -2,7 +2,7 @@
 
 Brain teasers are meant to confuse and frustrate you. Often, what
 interviewers are trying to do is emulate a test of how you think, using the
-concept of Type I and II thinking from the book _Thinking Fast and Slow_. The
+concept of Type I and II thinking from the book [_Thinking Fast and Slow_](https://amzn.to/3PMXr2e). The
 general gist of Type I and II is that Type I is the intuitive thinking
 process and is quick, but may lead to mistakes, and Type II thinking is more
 thorough, uses logic and math foundations, and gives you more accurate
