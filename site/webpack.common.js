@@ -7,13 +7,12 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: "./public/index.html"
+      template: "./public/index.html",
     }),
   ],
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "build"),
-    publicPath: "/",
   },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
