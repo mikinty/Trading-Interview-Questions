@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const INITIAL_CASH = 50000;
-const MAX_ROUNDS = 10;
+const MAX_ROUNDS = 6;
 
 export default function FindMarket() {
   const [gameNumber, setGameNumber] = useState(0);
