@@ -7,6 +7,15 @@ export default function App() {
       <h1>Trading Games</h1>
       <div id="games-container">
         <div className="game">
+          <Link to="/findmarket" className="game-title">
+            Find the Market
+          </Link>
+          <div className="description">
+            We'll give you a big range, but using bid-ask spreads, you have to
+            find the market as accurately as possible, while avoiding losses.
+          </div>
+        </div>
+        <div className="game">
           <Link to="/cardsum" className="game-title">
             Sum of Cards
           </Link>
