@@ -25,6 +25,14 @@ If I helped you ace your interviews or you wanna help me out, you can [support m
   7. [Links and Resources](resources/links.md)
   8. [The Interview Process](resources/interview.md)
 
+## Practice Here!
+
+I've finally made a website with some Quant games for you to practice some market making, gambling and market simulation skills.
+
+https://mikinty.github.io/Trading-Interview-Questions/
+
+NOTE: I know that subdirectory routes don't work yet, this is because I couldn't figure out how to get `HashRouter` to work...more on that soon.
+
 ## If you decide to trade
 
 I'm writing a curriculum for learning trading basics, from fundamental analysis to psychology, check it out here: https://github.com/mikinty/Trading-Curriculum
