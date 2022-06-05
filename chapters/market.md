@@ -114,3 +114,7 @@ Let the population of Russia be R and let the population of Estonia be E.
 
 We are trading the spread R - E. If you have 5 buys, what orders to you place?
 ```
+
+## Practice
+
+- [**Find the Market**](https://mikinty.github.io/Trading-Interview-Questions/) is a game I created that can help you practice bid-ask and sizing on a static market.
