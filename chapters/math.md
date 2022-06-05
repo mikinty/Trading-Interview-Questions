@@ -1,7 +1,7 @@
 # Be Quick
 
 A prerequisite for most quant trading roles is to be able to think quickly, and thus, be able to do math quickly.
-If you're someone who struggles to do basic math quickly -- it's gonna be a rough ride. But the good news is that 
+If you're someone who struggles to do basic math quickly -- it's gonna be a rough ride. But the good news is that
 no matter how bad you are, there is almost always room for improvement.
 
 ## Quick Maths
@@ -111,6 +111,17 @@ Scoring in the top 500 is considered a strong achievement.
 
 ### Well-known competitions
 
-- HMMT
-- ARML
-- PUMAC
+You can usually find past problems for competitions here.
+
+- [HMMT](https://www.hmmt.org/)
+- [ARML](https://www.arml.com/ARML/arml_2019/page/index.php)
+- [PUMaC](https://jason-shi-f9dm.squarespace.com/)
+- [SUMO](https://sumo.stanford.edu/smt/)
+- [Duke Math Meet](https://math.duke.edu/duke-math-meet)
+
+## Good resources for improving math skills
+
+- [The Art and Craft of Problem Solving](https://amzn.to/3GS0lyQ): Great book for teaching you how to think about solving problems, mentality like how to not give up, and tools for trying to solve problems. Lots of good competition problems in here that often show up in more advanced Quant interviews.
+- [AGMath Number Sense](https://www.agmath.com/57427/index.html): Scroll to "Number Sense Worksheets"
+- [Number Sense by Bryant Heath](http://bryantheath.com/number-sense-tricks-manual/):
+- [Art of Problem Solving](https://artofproblemsolving.com/): Geared more towards High School and under, but these resources are great for building strong fundamentals for math, not just competitions. Their [books are great resources](https://artofproblemsolving.com/store).
