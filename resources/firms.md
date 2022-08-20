@@ -1,7 +1,7 @@
 # List of Firms to Apply
 
 - [Citadel](https://www.citadel.com/careers/open-positions/): Very intense work culture, but there are good methodologies to be learned here about trading.
-- [Two Sigma](https://www.twosigma.com/careers/)
+- [Two Sigma](https://www.twosigma.com/careers/): Very tech-friendly these days given how many SWEs they have. Almost like "big-tech" but in trading.
 - [Optiver](https://www.optiver.com/working-at-optiver/career-opportunities/): Options house
 - [SIG Susquehanna](https://careers.sig.com/): Big options house
 - [Akuna](https://akunacapital.com/careers)
@@ -9,9 +9,11 @@
 - [Chicago Trading Company](https://www.chicagotrading.com/search#search-results)
 - [Jump Trading](https://www.jumptrading.com/careers/)
 - [Jane Street](https://www.janestreet.com/join-jane-street/overview/): A top-tier quant firm
-- [HRT](https://www.hudsonrivertrading.com/careers/): Well-known for their use of high-frequency trading
+- [HRT](https://www.hudsonrivertrading.com/careers/): Well-known for their high-frequency trading
 - [PDT Partners](https://pdtpartners.com/careers)
 - [Renaissance Technologies](https://www.rentec.com/Careers.action)
+- [Headlands](http://www.headlandstech.com/): Academic-driven, very high quality software
+- [Old Mission Capital](https://www.oldmissioncapital.com/)
 
 ## Headhunters
 
