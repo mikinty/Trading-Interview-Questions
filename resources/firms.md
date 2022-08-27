@@ -14,6 +14,7 @@
 - [Renaissance Technologies](https://www.rentec.com/Careers.action)
 - [Headlands](http://www.headlandstech.com/): Academic-driven, very high quality software
 - [Old Mission Capital](https://www.oldmissioncapital.com/)
+- [Vatic Investments](http://www.vaticinvestments.com/careers/): Top-tier firm well-known for their ML research in trading
 
 ## Headhunters
 
