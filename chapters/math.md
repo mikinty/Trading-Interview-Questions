@@ -113,6 +113,6 @@ Scoring in the top 500 is considered a strong achievement.
 
 ### Well-known competitions
 
-- HMMT
-- ARML
-- PUMAC
+- [HMMT](https://www.hmmt.org/)
+- [ARML](https://www.arml.com/)
+- [PUMAC](https://jason-shi-f9dm.squarespace.com/)
