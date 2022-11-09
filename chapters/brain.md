@@ -13,6 +13,14 @@ A way to prepare for these type of questions is to develop good problem
 solving skills. Another way is just to memorize enough and hope that you get
 asked one of them.
 
+## How to Train Brainteasers
+
+As with any problem solving skill, doing brain teasers is mostly valuable not so you can memorize the solution, but exercise your brain's ability to reason, think, experiment, and challenge itself with difficult problems. If you really think through problems and give an earnest effort, trying to unblock yourself constantly, you will develop much stronger problem solving skills than someone who just looks up the answer. There are just things that can't be taught when you attempt a problem earnestly.
+
+## Questions
+
+[This website has a great selection of brainteasers](http://puzzles.nigelcoldwell.co.uk/).
+
 - A rope is tied around the circumference of the Earth very tightly, so that it is tightly taut along
   the surface of the Earth. Now suppose that you add 1 feet of length to this rope, so that it is a bit
   looser. How high above the surface of the Earth will this new rope be?
