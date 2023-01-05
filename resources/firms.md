@@ -1,5 +1,7 @@
 # List of Firms to Apply
 
+I don't endorse this site directly, but they seem to have a good article on firms and their differences: https://www.thewallstreetquants.com/cone1-firm-list
+
 - [Citadel](https://www.citadel.com/careers/open-positions/): Very intense work culture, but there are good methodologies to be learned here about trading.
 - [Two Sigma](https://www.twosigma.com/careers/): Very tech-friendly these days given how many SWEs they have. Almost like "big-tech" but in trading.
 - [Optiver](https://www.optiver.com/working-at-optiver/career-opportunities/): Options house
