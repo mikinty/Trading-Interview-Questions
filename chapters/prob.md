@@ -30,6 +30,8 @@ The reason people care about EV is that whenever you play a game, every outcome 
 
 In the trading world, a trade has some sort of EV. In general, traders want to steer towards positive EV actions and avoid negative EV actions. This way, over time, the trader will make money. Firms want their candidates to be able to accurately and quickly assess EV so they have a good chance of making the right choices on the job.
 
+EV naturally extends to betting, where you can imagine you calculate odds for events in a game, and then place bets accordingly. [The Kelly Criterion](https://en.wikipedia.org/wiki/Kelly_criterion) is an important concept to study regarding how much to bet if you know what your odds are.
+
 ### Examples
 
 - A classic question would be something like "Someone offers to pay you the product of a dice roll and the number value of a card drawn from a standard deck. How much should this person be charging for this game at least?"
