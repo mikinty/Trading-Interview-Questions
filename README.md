@@ -25,6 +25,7 @@ If I helped you ace your interviews or you wanna help me out, you can [support m
   7. [Links and Resources](resources/links.md)
   8. [The Interview Process](resources/interview.md)
   9. [List of Quant Firms](resources/firms.md)
+  10. [Some of my Favorite Articles about Quant](resources/articles.md)
 
 ## Practice Here!
 
