@@ -45,3 +45,7 @@ EV = YOUR_HAND + KNOWN_CARDS + ((N-1)*2 + NUM_FACEDOWN)*(SUM_REMAINING)/NUM_UNKN
 In addition, you should also have some confidence in this measurement. What this translates to in the market making is that if you are more confident in your estimate, you might trade a smaller spread, like `45/55`, and trade a very high volume, so you can make more money. But if you are not as confident, you might do something like `EV-20/EV+20`, and trade a smaller volume.
 
 They are also looking for how well you can make market orders with the sum of card value contract. In general, if you have more information than others, you should do better in this game. E.g. if you start with pocket Ks, then you know the total sum of cards is high, whereas your opponents probably don't, so you should be aggressively buying people's sell orders if you think they are selling too low.
+
+## Other Games
+
+- [Jane Street has a great example of how an interview might go with a game](https://youtu.be/NT_I1MjckaU)
