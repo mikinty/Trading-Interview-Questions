@@ -49,3 +49,4 @@ They are also looking for how well you can make market orders with the sum of ca
 ## Other Games
 
 - [Jane Street has a great example of how an interview might go with a game](https://youtu.be/NT_I1MjckaU)
+- [Jane Street's Figgie](https://www.figgie.com/): This is a game you might play during an onsite interview
