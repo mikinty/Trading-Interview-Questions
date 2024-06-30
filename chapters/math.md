@@ -42,7 +42,7 @@ an ancient website for sure, but if you scroll down to the bottom of this page y
 number sense worksheets. I think number sense is a natural extension from the simple arithmetic
 you can practice from zetamac.
 
-Another great guide for number sense can be found at [[http://bowenpeters.weebly.com/uploads/8/1/1/9/8119969/numbersense.pdf](http://bryantheath.com/number-sense-tricks-manual/)](http://bryantheath.com/number-sense-tricks-manual/). Bryant Heath also has a bunch of good Number Sense resources [here](http://bryantheath.com/number-sense-tricks-manual/) (probably more useful if you're actually competing, but unlikely if you're looking for jobs).
+Another great guide for number sense can be found [by Bryant Heath](http://bryantheath.com/files/2018/04/Heath_NSTricks_revA.pdf). Bryant Heath also has a bunch of good Number Sense resources [here](http://bryantheath.com/number-sense-tricks-manual/) (probably more useful if you're actually competing, but unlikely if you're looking for jobs).
 
 ## Sequences and Patterns
 
