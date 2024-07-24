@@ -17,6 +17,15 @@ I don't endorse this site directly, but they seem to have a good article on firm
 - [Headlands](http://www.headlandstech.com/): Academic-driven, very high quality software
 - [Old Mission Capital](https://www.oldmissioncapital.com/)
 - [Vatic Investments](http://www.vaticinvestments.com/careers/): Top-tier firm well-known for their ML research in trading
+- [Tower](https://www.tower-research.com/open-positions)
+- [DRW](https://drw.com/work-at-drw/listings)
+
+## Market Makers
+
+Some of the firms above are market makers as well. But putting some here to have some sort of separation.
+
+- [Citadel Securities](https://www.citadelsecurities.com/careers/open-opportunities/): Yes, Citadel and Securities are different. Citadel Securities is primarily a market-maker.
+- [Wincent](https://www.wincent.com/careers): Crypto market-making firm
 
 ## Headhunters
 
