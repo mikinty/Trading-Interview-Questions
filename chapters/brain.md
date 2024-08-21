@@ -19,7 +19,7 @@ As with any problem solving skill, doing brain teasers is mostly valuable not so
 
 ## Questions
 
-[This website has a great selection of brainteasers](http://puzzles.nigelcoldwell.co.uk/).
+[This website has a great selection of brainteasers](http://puzzles.nigelcoldwell.co.uk/). [Quant Questions also offers a large selection of puzzles](https://quantquestions.io/problems).
 
 - A rope is tied around the circumference of the Earth very tightly, so that it is tightly taut along
   the surface of the Earth. Now suppose that you add 1 feet of length to this rope, so that it is a bit
