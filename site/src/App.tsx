@@ -1,57 +1,124 @@
 import { Link } from 'react-router-dom';
+import { Header } from '@components/layout/Header';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <h1 className="text-4xl font-bold text-center mb-2 text-foreground">
-          Trading Games
-        </h1>
-        <p className="text-center text-gray-600 dark:text-gray-400 mb-12">
-          Practice market making, probability, and trading skills
-        </p>
+    <div className="min-h-screen bg-background flex flex-col">
+      <Header />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link
-            to="/findmarket"
-            className="group block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105"
-          >
-            <h2 className="text-2xl font-semibold mb-3 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
-              Find the Market
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300">
-              We'll give you a big range, but using bid-ask spreads, you have to
-              find the market as accurately as possible, while avoiding losses.
+      <main className="flex-1">
+        <div className="container mx-auto px-4 py-12 max-w-6xl">
+          {/* Hero section */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-foreground">
+              Trading Games
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+              Practice market making, probability, and trading skills
             </p>
-          </Link>
+          </div>
 
-          <Link
-            to="/cardsum"
-            className="group block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105"
-          >
-            <h2 className="text-2xl font-semibold mb-3 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
-              Sum of Cards
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300">
-              A game where you make a market on what you think the sum of cards in
-              play is. The catch is -- you don't see all the cards!
-            </p>
-          </Link>
+          {/* Game cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <Link
+              to="/findmarket"
+              className="group block p-6 bg-card border-2 border-border rounded-xl hover:shadow-xl hover:border-primary transition-all duration-200 hover:-translate-y-1"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl">
+                  📈
+                </div>
+                <h2 className="text-2xl font-bold text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                  Find the Market
+                </h2>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                Use bid-ask spreads to discover the true market price. Balance risk and information across multiple rounds.
+              </p>
+              <div className="flex items-center text-sm text-primary font-medium">
+                Play Now
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
 
-          <Link
-            to="/craps"
-            className="group block p-6 bg-card border border-border rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105"
-          >
-            <h2 className="text-2xl font-semibold mb-3 text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
-              Craps with Bonus
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300">
-              Play this classic casino game, except with a bonus stage where you
-              can make markets on the outcome!
+            <Link
+              to="/cardsum"
+              className="group block p-6 bg-card border-2 border-border rounded-xl hover:shadow-xl hover:border-primary transition-all duration-200 hover:-translate-y-1"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl">
+                  🃏
+                </div>
+                <h2 className="text-2xl font-bold text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                  Sum of Cards
+                </h2>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                Make markets on card sums with hidden information. Calculate expected values and trade against AI opponents.
+              </p>
+              <div className="flex items-center text-sm text-primary font-medium">
+                Play Now
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+
+            <Link
+              to="/craps"
+              className="group block p-6 bg-card border-2 border-border rounded-xl hover:shadow-xl hover:border-primary transition-all duration-200 hover:-translate-y-1"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl">
+                  🎲
+                </div>
+                <h2 className="text-2xl font-bold text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                  Craps with Bonus
+                </h2>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                Play craps with a trading twist. Make markets on probabilities and manage contract positions while rolling.
+              </p>
+              <div className="flex items-center text-sm text-primary font-medium">
+                Play Now
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          </div>
+
+          {/* Info section */}
+          <div className="bg-card border border-border rounded-xl p-8 text-center">
+            <h3 className="text-2xl font-bold text-foreground mb-4">
+              Master Trading Concepts Through Practice
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              These interactive games help you develop intuition for market making, probability estimation, and risk management. Track your progress, adjust difficulty levels, and improve your trading skills through hands-on experience.
             </p>
-          </Link>
+          </div>
         </div>
-      </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-8">
+        <div className="container mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
+          <p>
+            Part of the{' '}
+            <a
+              href="https://github.com/mikinty/Trading-Interview-Questions"
+              className="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Trading Interview Questions
+            </a>
+            {' '}project
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

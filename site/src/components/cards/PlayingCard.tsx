@@ -52,19 +52,17 @@ export function PlayingCard({
         bg-white dark:bg-gray-100
         border-2 border-gray-300 dark:border-gray-400
         rounded-lg
-        p-1
+        p-2
         shadow-md
-        flex flex-col items-center justify-between
+        flex flex-col items-center justify-center
+        gap-1
       `}
     >
-      <div className={`font-bold ${colorClass}`}>
-        <div>{card.rank}</div>
-        <div className="text-center">{suitSymbols[card.suit]}</div>
+      <div className={`font-bold ${colorClass} text-lg`}>
+        {card.rank}
       </div>
-      <div className={`text-2xl ${colorClass}`}>{suitSymbols[card.suit]}</div>
-      <div className={`font-bold ${colorClass} transform rotate-180`}>
-        <div className="text-center">{suitSymbols[card.suit]}</div>
-        <div>{card.rank}</div>
+      <div className={`text-3xl ${colorClass}`}>
+        {suitSymbols[card.suit]}
       </div>
     </div>
   );
