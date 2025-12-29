@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const INITIAL_CASH = 50000;
 const MAX_ROUNDS = 6;
@@ -8,20 +8,20 @@ export default function FindMarket() {
   const [round, setRound] = useState(1);
   const [cash, setCash] = useState(INITIAL_CASH);
   const [stock, setStock] = useState(0);
-  const [bid, setBid] = useState(null);
-  const [ask, setAsk] = useState(null);
-  const [sizeAsk, setSizeAsk] = useState(null);
-  const [sizeBid, setSizeBid] = useState(null);
+  const [bid, setBid] = useState<number | null>(null);
+  const [ask, setAsk] = useState<number | null>(null);
+  const [sizeAsk, setSizeAsk] = useState<number | null>(null);
+  const [sizeBid, setSizeBid] = useState<number | null>(null);
   const [message, setMessage] = useState("");
-  const [actions, setActions] = useState([]);
+  const [actions, setActions] = useState<string[]>([]);
 
-  const [target, setTarget] = useState(null);
-  const [lowerRange, setLowerRange] = useState(null);
-  const [upperRange, setUpperRange] = useState(null);
-  const [priceBid, setPriceBid] = useState(null);
-  const [priceAsk, setPriceAsk] = useState(null);
+  const [target, setTarget] = useState<number | null>(null);
+  const [lowerRange, setLowerRange] = useState<number | null>(null);
+  const [upperRange, setUpperRange] = useState<number | null>(null);
+  const [priceBid, setPriceBid] = useState<number | null>(null);
+  const [priceAsk, setPriceAsk] = useState<number | null>(null);
 
-  const [finalPrice, setFinalPrice] = useState(null);
+  const [finalPrice, setFinalPrice] = useState<number | null>(null);
 
   const setupGame = () => {
     // Generate target price
@@ -62,8 +62,8 @@ export default function FindMarket() {
       return;
     }
     // Calculate the final score
-    const priceDiff = target - finalPrice;
-    const portfolioValue = cash + stock * target;
+    const priceDiff = (target ?? 0) - finalPrice;
+    const portfolioValue = cash + stock * (target ?? 0);
 
     setMessage(
       `The actual price was ${target}. You were off by ${priceDiff}. Your final portfolio value is ${cash} + ${stock}*${target} = ${portfolioValue}.`
@@ -80,30 +80,30 @@ export default function FindMarket() {
       return;
     }
 
-    let actions = [];
-    if (bid >= priceBid) {
+    const newActions: string[] = [];
+    if (priceBid !== null && bid >= priceBid) {
       setCash(cash - sizeBid * bid);
-      setStock(stock + parseInt(sizeBid));
-      actions.push(`${sizeBid} buys filled @${bid}`);
+      setStock(stock + parseInt(String(sizeBid)));
+      newActions.push(`${sizeBid} buys filled @${bid}`);
     } else {
-      actions.push("No bids filled.");
+      newActions.push("No bids filled.");
     }
 
-    if (ask <= priceAsk) {
+    if (priceAsk !== null && ask <= priceAsk) {
       setCash(cash + sizeAsk * ask);
-      setStock(stock - parseInt(sizeAsk));
-      actions.push(`${sizeAsk} sells filled @${ask}`);
+      setStock(stock - parseInt(String(sizeAsk)));
+      newActions.push(`${sizeAsk} sells filled @${ask}`);
     } else {
-      actions.push("No sells filled.");
+      newActions.push("No sells filled.");
     }
 
     resetRound();
-    setActions(actions);
+    setActions(newActions);
     setRound(round + 1);
   };
 
   const renderActions = () => {
-    return actions.map((action) => <div>{action}</div>);
+    return actions.map((action, index) => <div key={index}>{action}</div>);
   };
 
   const mainControls = (
@@ -113,13 +113,13 @@ export default function FindMarket() {
         <input
           id="bid"
           type="number"
-          onChange={(e) => setBid(e.target.value)}
+          onChange={(e) => setBid(Number(e.target.value))}
         />
         &nbsp;Size:&nbsp;
         <input
           id="bid-size"
           type="number"
-          onChange={(e) => setSizeBid(e.target.value)}
+          onChange={(e) => setSizeBid(Number(e.target.value))}
         />
       </div>
       <div>
@@ -127,13 +127,13 @@ export default function FindMarket() {
         <input
           id="ask"
           type="number"
-          onChange={(e) => setAsk(e.target.value)}
+          onChange={(e) => setAsk(Number(e.target.value))}
         />
         &nbsp;Size:&nbsp;
         <input
           id="ask-size"
           type="number"
-          onChange={(e) => setSizeAsk(e.target.value)}
+          onChange={(e) => setSizeAsk(Number(e.target.value))}
         />
       </div>
       <button onClick={playRound}>Submit</button>
@@ -147,7 +147,7 @@ export default function FindMarket() {
         <input
           id="final-price"
           type="number"
-          onChange={(e) => setFinalPrice(e.target.value)}
+          onChange={(e) => setFinalPrice(Number(e.target.value))}
         />
       </div>
       <button onClick={playFinalRound}>Submit</button>
