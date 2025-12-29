@@ -1,29 +1,14 @@
 {
   "name": "trading_interview_questions",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Interactive trading interview question games",
-  "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "start": "webpack serve --open --config webpack.dev.js",
-    "deploy": "npm run build && gh-pages -d build",
-    "build": "webpack --config webpack.prod.js",
-    "lint": "eslint --ext .js src/",
-    "lint-fix": "eslint --fix --ext .js src/"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "repository": {
     "type": "git",
@@ -34,28 +19,26 @@
   "bugs": {
     "url": "https://github.com/mikinty/Trading-Interview-Questions/issues"
   },
-  "homepage": "https://github.com/mikinty/Trading-Interview-Questions#readme",
-  "devDependencies": {
-    "@babel/core": "^7.14.0",
-    "@babel/node": "^7.13.13",
-    "@babel/preset-env": "^7.14.1",
-    "@babel/preset-react": "^7.13.13",
-    "babel-loader": "^8.3.0",
-    "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "css-loader": "^5.2.4",
-    "file-loader": "^6.2.0",
-    "gh-pages": "^5.0.0",
-    "html-webpack-plugin": "^5.3.1",
-    "sass": "^1.52.2",
-    "sass-loader": "^11.0.1",
-    "style-loader": "^2.0.0",
-    "webpack": "^5.76.0",
-    "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^4.2.0"
-  },
+  "homepage": "https://mikinty.github.io/Trading-Interview-Questions/",
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^6.3.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.1.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.18.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "gh-pages": "^6.2.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
   }
 }
