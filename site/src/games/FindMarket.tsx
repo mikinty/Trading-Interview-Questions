@@ -20,6 +20,9 @@ export default function FindMarket() {
     maxRounds: number;
     tolerance: [number, number];
     priceMultiplier: number;
+    priceMovement: 'static' | 'random' | 'adversarial';
+    rangeVariation: number;
+    description: string;
   };
 
   const [gameNumber, setGameNumber] = useState(0);
@@ -56,8 +59,15 @@ export default function FindMarket() {
     tempTarget = Math.ceil(tempTarget);
 
     setTarget(tempTarget);
-    setLowerRange(0);
-    setUpperRange((multiplier * numIter * (numIter + 1)) / 2 + 30);
+
+    // Randomize range bounds based on difficulty
+    const baseUpper = (multiplier * numIter * (numIter + 1)) / 2 + 30;
+    const rangeVariation = gameConfig.rangeVariation;
+    const randomizedLower = Math.floor(Math.random() * rangeVariation);
+    const randomizedUpper = baseUpper + Math.floor(Math.random() * rangeVariation);
+
+    setLowerRange(randomizedLower);
+    setUpperRange(randomizedUpper);
     setPriceBid(tempTarget - tolerance);
     setPriceAsk(tempTarget + tolerance);
 
@@ -132,6 +142,9 @@ export default function FindMarket() {
     let newCash = cash;
     let newStock = stock;
 
+    // Add market info
+    newActions.push(`Market: $${bid} × $${ask} (${sizeBid} × ${sizeAsk})`);
+
     if (priceBid !== null && bid >= priceBid) {
       newCash -= sizeBid * bid;
       newStock += sizeBid;
@@ -153,6 +166,66 @@ export default function FindMarket() {
     resetRound();
     setActions([...newActions, ...actions]);
     setRound(round + 1);
+
+    // Update target price based on difficulty
+    if (gameConfig.priceMovement === 'random') {
+      // Random movement independent of user's market
+      const movement = (Math.random() - 0.5) * 20; // Random walk of -10 to +10
+      const newTarget = Math.max(
+        (lowerRange ?? 0) + 10,
+        Math.min((upperRange ?? 1000) - 10, (target ?? 0) + movement)
+      );
+      setTarget(Math.ceil(newTarget));
+
+      // Update price bid/ask tolerance
+      const [minTolerance, maxTolerance] = gameConfig.tolerance;
+      const tolerance = Math.ceil(
+        minTolerance + Math.random() * (maxTolerance - minTolerance)
+      );
+      setPriceBid(Math.ceil(newTarget - tolerance));
+      setPriceAsk(Math.ceil(newTarget + tolerance));
+    } else if (gameConfig.priceMovement === 'adversarial') {
+      // Move price to exploit user's market
+      const currentTarget = target ?? 0;
+      const spread = ask - bid;
+      const midpoint = (bid + ask) / 2;
+
+      let newTarget = currentTarget;
+
+      // If spread is wide, move randomly to potentially exploit it
+      if (spread > 50) {
+        newTarget = midpoint + (Math.random() - 0.5) * spread * 0.8;
+      }
+      // If user is bidding too high (above target), move target up slightly to fill them
+      else if (bid > currentTarget + 5) {
+        newTarget = currentTarget + Math.random() * 10;
+      }
+      // If user is asking too low (below target), move target down slightly to fill them
+      else if (ask < currentTarget - 5) {
+        newTarget = currentTarget - Math.random() * 10;
+      }
+      // Otherwise random small movement
+      else {
+        newTarget = currentTarget + (Math.random() - 0.5) * 15;
+      }
+
+      // Keep within bounds
+      newTarget = Math.max(
+        (lowerRange ?? 0) + 10,
+        Math.min((upperRange ?? 1000) - 10, newTarget)
+      );
+
+      setTarget(Math.ceil(newTarget));
+
+      // Update price bid/ask tolerance
+      const [minTolerance, maxTolerance] = gameConfig.tolerance;
+      const tolerance = Math.ceil(
+        minTolerance + Math.random() * (maxTolerance - minTolerance)
+      );
+      setPriceBid(Math.ceil(newTarget - tolerance));
+      setPriceAsk(Math.ceil(newTarget + tolerance));
+    }
+    // For 'static' mode, target doesn't change
 
     // Clear inputs
     setBid(null);
@@ -190,11 +263,19 @@ export default function FindMarket() {
               }}
               disabled={round > 1}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              {round > 1
-                ? 'Difficulty locked during game'
-                : 'Change difficulty and start new game'}
-            </p>
+            <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mb-1">
+                {difficulty} Mode:
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                {gameConfig.description}
+              </p>
+            </div>
+            {round > 1 && (
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Difficulty locked during game
+              </p>
+            )}
           </Card>
 
           <ScoreBoard gameType="findmarket" />

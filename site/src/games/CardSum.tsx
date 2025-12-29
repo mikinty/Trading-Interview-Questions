@@ -159,6 +159,9 @@ export default function CardSum() {
     let newCash = cash;
     let newPositions = longPositions;
 
+    // Add market info
+    newActions.push(`Market: $${bid} × $${ask} (${sizeBid} × ${sizeAsk})`);
+
     // Evaluate opponent trades
     const { buyFills, sellFills } = evaluateOpponentTrades(
       bid,
@@ -199,8 +202,14 @@ export default function CardSum() {
     } else {
       // Final round - calculate score
       const finalScore = newCash + newPositions * actualSum;
+      const profitLoss = finalScore - gameConfig.initialCash;
+      const profitLossText =
+        profitLoss >= 0
+          ? `gained $${profitLoss.toLocaleString()}`
+          : `lost $${Math.abs(profitLoss).toLocaleString()}`;
+
       setMessage(
-        `Game Over! Actual sum was ${actualSum}. Your P&L: $${newCash} + ${newPositions} × ${actualSum} = $${finalScore.toLocaleString()}`
+        `Game Over! Actual sum was ${actualSum}. Your P&L: $${newCash.toLocaleString()} + ${newPositions} × ${actualSum} = $${finalScore.toLocaleString()}. You ${profitLossText}.`
       );
       setRound(round + 1);
 
@@ -285,7 +294,7 @@ export default function CardSum() {
                 <PlayingCard
                   key={index}
                   card={card}
-                  faceDown={index >= revealedCount}
+                  faceDown={index >= revealedCount && !isGameOver}
                   size="md"
                 />
               ))}
@@ -296,6 +305,25 @@ export default function CardSum() {
               </div>
             )}
           </UICard>
+
+          {isGameOver && opponentHands.length > 0 && (
+            <UICard>
+              <h3 className="font-semibold text-foreground mb-4">Opponent Hands</h3>
+              <div className="space-y-4">
+                {opponentHands.map((hand, idx) => (
+                  <div key={idx}>
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Opponent {idx + 1}
+                    </div>
+                    <Hand cards={hand} size="md" />
+                    <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Sum: {calculateSum(hand)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </UICard>
+          )}
 
           <UICard>
             <div className="space-y-4">

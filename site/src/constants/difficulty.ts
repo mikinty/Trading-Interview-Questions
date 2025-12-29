@@ -6,6 +6,9 @@ export interface DifficultyConfig {
     maxRounds: number;
     tolerance: [number, number]; // [min, max] range for bid-ask spread
     priceMultiplier: number;
+    priceMovement: 'static' | 'random' | 'adversarial'; // How the target price moves
+    rangeVariation: number; // Randomness in upper/lower range bounds
+    description: string; // Description of difficulty behavior
   };
   cardsum: {
     initialCash: number;
@@ -24,9 +27,12 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
   [Difficulty.Easy]: {
     findmarket: {
       initialCash: 50000,
-      maxRounds: 8,
+      maxRounds: 12,
       tolerance: [15, 30],
       priceMultiplier: 1,
+      priceMovement: 'static',
+      rangeVariation: 50,
+      description: 'Target price stays constant. Good for learning the mechanics.',
     },
     cardsum: {
       initialCash: 10000,
@@ -43,13 +49,16 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
   [Difficulty.Medium]: {
     findmarket: {
       initialCash: 50000,
-      maxRounds: 6,
+      maxRounds: 12,
       tolerance: [10, 20],
       priceMultiplier: 1.5,
+      priceMovement: 'random',
+      rangeVariation: 100,
+      description: 'Target price moves randomly each round, independent of your bids/asks.',
     },
     cardsum: {
       initialCash: 10000,
-      numPlayers: 3,
+      numPlayers: 4,
       opponentSkill: 'approximate',
       tradingVolume: 10,
     },
@@ -62,9 +71,12 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
   [Difficulty.Hard]: {
     findmarket: {
       initialCash: 50000,
-      maxRounds: 4,
+      maxRounds: 12,
       tolerance: [5, 15],
       priceMultiplier: 2,
+      priceMovement: 'adversarial',
+      rangeVariation: 150,
+      description: 'Target price moves adversarially to exploit wide or one-sided markets.',
     },
     cardsum: {
       initialCash: 10000,
