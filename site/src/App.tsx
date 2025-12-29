@@ -75,11 +75,11 @@ export default function App() {
                   🎲
                 </div>
                 <h2 className="text-2xl font-bold text-primary group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                  Craps with Bonus
+                  Craps Betting Board
                 </h2>
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Play craps with a trading twist. Make markets on probabilities and manage contract positions while rolling.
+                Identify +EV bets quickly under time pressure.
               </p>
               <div className="flex items-center text-sm text-primary font-medium">
                 Play Now

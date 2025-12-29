@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameLayout } from '@components/layout/GameLayout';
 import { Button } from '@components/ui/Button';
-import { Input } from '@components/ui/Input';
 import { Card as UICard } from '@components/ui/Card';
 import { GameStats } from '@components/game/GameStats';
 import { ActionHistory } from '@components/game/ActionHistory';
@@ -11,13 +10,39 @@ import { useDifficulty } from '@hooks/useDifficulty';
 import { useScoreHistory } from '@hooks/useScoreHistory';
 import { Difficulty } from '@/types/game.types';
 
-enum CrapsPhase {
+enum GamePhase {
   Betting = 'betting',
-  ComeOut = 'comeout',
-  Trading = 'trading',
-  Point = 'point',
-  Resolved = 'resolved',
+  Rolling = 'rolling',
+  Result = 'result',
 }
+
+interface BetOption {
+  id: string;
+  label: string;
+  probability: number; // True probability (0-1)
+  payout: number; // Current payout multiplier
+  category: 'sum' | 'parity' | 'die';
+}
+
+const BET_INCREMENT = 100;
+const STARTING_CASH = 10000;
+
+// Calculate true probabilities
+const SUM_PROBABILITIES: Record<number, number> = {
+  2: 1 / 36,
+  3: 2 / 36,
+  4: 3 / 36,
+  5: 4 / 36,
+  6: 5 / 36,
+  7: 6 / 36,
+  8: 5 / 36,
+  9: 4 / 36,
+  10: 3 / 36,
+  11: 2 / 36,
+  12: 1 / 36,
+};
+
+const DIE_PROBABILITY = 11 / 36; // P(at least one die shows X)
 
 export default function Craps() {
   const { difficulty, config, changeDifficulty } = useDifficulty('craps');
@@ -25,322 +50,300 @@ export default function Craps() {
 
   // Type assertion for game-specific config
   const gameConfig = config as typeof config & {
-    opponentSkill: 'random' | 'approximate' | 'optimal';
-    marketWidth: number;
+    timerSeconds: number | null; // null = infinite
+    minTimer?: number;
+    maxTimer?: number;
+    marketType: 'random' | 'mixed' | 'bear'; // bear = all bad payouts
   };
 
-  const [phase, setPhase] = useState<CrapsPhase>(CrapsPhase.Betting);
-  const [cash, setCash] = useState(gameConfig.initialCash);
-  const [initialBet, setInitialBet] = useState<number>(100);
-  const [point, setPoint] = useState<number | null>(null);
+  const [phase, setPhase] = useState<GamePhase>(GamePhase.Betting);
+  const [cash, setCash] = useState(STARTING_CASH);
+  const [round, setRound] = useState(1);
   const [dice, setDice] = useState<[number, number]>([1, 1]);
-  const [rollHistory, setRollHistory] = useState<number[]>([]);
-
-  // Trading state
-  const [bid, setBid] = useState<number | null>(null);
-  const [ask, setAsk] = useState<number | null>(null);
-  const [longContracts, setLongContracts] = useState(0);
-
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [betOptions, setBetOptions] = useState<BetOption[]>([]);
+  const [bets, setBets] = useState<Record<string, number>>({}); // optionId -> amount
   const [actions, setActions] = useState<string[]>([]);
-  const [message, setMessage] = useState('');
   const [gameNumber, setGameNumber] = useState(0);
 
-  // Calculate probability of making point
-  const calculatePointProbability = (pointValue: number): number => {
-    const pointWays: Record<number, number> = {
-      4: 3,
-      5: 4,
-      6: 5,
-      8: 5,
-      9: 4,
-      10: 3,
-    };
-    const sevenWays = 6;
-    const ways = pointWays[pointValue] || 0;
-    return Math.round((ways / (ways + sevenWays)) * 100);
+  // Generate betting options with payouts
+  const generateBetOptions = (): BetOption[] => {
+    const options: BetOption[] = [];
+
+    // Sum bets (2-12)
+    for (let sum = 2; sum <= 12; sum++) {
+      const prob = SUM_PROBABILITIES[sum] ?? 0;
+      const fairPayout = 1 / prob;
+      let payout = fairPayout;
+
+      if (gameConfig.marketType === 'random') {
+        // Easy: random payouts, some good, some bad
+        payout = fairPayout * (0.7 + Math.random() * 0.6); // 0.7x to 1.3x of fair
+      } else if (gameConfig.marketType === 'mixed') {
+        // Medium: mostly bad, occasional good
+        payout = Math.random() < 0.3 ? fairPayout * (1.05 + Math.random() * 0.15) : fairPayout * (0.6 + Math.random() * 0.35);
+      } else {
+        // Hard: all bad payouts
+        payout = fairPayout * (0.5 + Math.random() * 0.4); // 0.5x to 0.9x of fair
+      }
+
+      options.push({
+        id: `sum-${sum}`,
+        label: `Sum ${sum}`,
+        probability: prob,
+        payout: Math.round(payout * 10) / 10,
+        category: 'sum',
+      });
+    }
+
+    // Even/Odd
+    const evenOddProb = 0.5;
+    const evenOddFair = 2;
+    let evenPayout = evenOddFair;
+    let oddPayout = evenOddFair;
+
+    if (gameConfig.marketType === 'random') {
+      evenPayout = evenOddFair * (0.8 + Math.random() * 0.4);
+      oddPayout = evenOddFair * (0.8 + Math.random() * 0.4);
+    } else if (gameConfig.marketType === 'mixed') {
+      evenPayout = Math.random() < 0.3 ? evenOddFair * (1.05 + Math.random() * 0.1) : evenOddFair * (0.7 + Math.random() * 0.25);
+      oddPayout = Math.random() < 0.3 ? evenOddFair * (1.05 + Math.random() * 0.1) : evenOddFair * (0.7 + Math.random() * 0.25);
+    } else {
+      evenPayout = evenOddFair * (0.6 + Math.random() * 0.3);
+      oddPayout = evenOddFair * (0.6 + Math.random() * 0.3);
+    }
+
+    options.push(
+      {
+        id: 'even',
+        label: 'Even',
+        probability: evenOddProb,
+        payout: Math.round(evenPayout * 10) / 10,
+        category: 'parity',
+      },
+      {
+        id: 'odd',
+        label: 'Odd',
+        probability: evenOddProb,
+        payout: Math.round(oddPayout * 10) / 10,
+        category: 'parity',
+      }
+    );
+
+    // Die face bets (1-6)
+    for (let face = 1; face <= 6; face++) {
+      const prob = DIE_PROBABILITY;
+      const fairPayout = 1 / prob;
+      let payout = fairPayout;
+
+      if (gameConfig.marketType === 'random') {
+        payout = fairPayout * (0.7 + Math.random() * 0.6);
+      } else if (gameConfig.marketType === 'mixed') {
+        payout = Math.random() < 0.3 ? fairPayout * (1.05 + Math.random() * 0.15) : fairPayout * (0.6 + Math.random() * 0.35);
+      } else {
+        payout = fairPayout * (0.5 + Math.random() * 0.4);
+      }
+
+      options.push({
+        id: `die-${face}`,
+        label: `Die ${face}`,
+        probability: prob,
+        payout: Math.round(payout * 10) / 10,
+        category: 'die',
+      });
+    }
+
+    return options;
   };
 
-  const rollDice = (): [number, number] => {
+  // Initialize game
+  useEffect(() => {
+    setBetOptions(generateBetOptions());
+    setBets({});
+    setRound(1);
+    setCash(STARTING_CASH);
+    setPhase(GamePhase.Betting);
+    setActions([]);
+  }, [gameNumber, difficulty]);
+
+  // Timer logic
+  useEffect(() => {
+    if (phase !== GamePhase.Betting || timeLeft === null) return;
+
+    if (timeLeft <= 0) {
+      handleRoll();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [phase, timeLeft]);
+
+  // Start betting phase
+  const startBettingPhase = () => {
+    setBetOptions(generateBetOptions());
+    setBets({});
+    setPhase(GamePhase.Betting);
+
+    // Set timer based on difficulty
+    if (gameConfig.timerSeconds === null) {
+      setTimeLeft(null); // Infinite time
+    } else if (gameConfig.minTimer !== undefined && gameConfig.maxTimer !== undefined) {
+      // Random timer for hard mode
+      const randomTime = Math.floor(Math.random() * (gameConfig.maxTimer - gameConfig.minTimer + 1)) + gameConfig.minTimer;
+      setTimeLeft(randomTime);
+    } else {
+      setTimeLeft(gameConfig.timerSeconds);
+    }
+  };
+
+  // Initialize first betting phase
+  useEffect(() => {
+    if (round === 1) {
+      startBettingPhase();
+    }
+  }, [round, gameNumber]);
+
+  const adjustBet = (optionId: string, delta: number) => {
+    const currentBet = bets[optionId] ?? 0;
+    const newBet = Math.max(0, currentBet + delta);
+    const totalBets = Object.values(bets).reduce((sum, amount) => sum + amount, 0) - currentBet + newBet;
+
+    if (totalBets > cash) {
+      return; // Can't bet more than current cash
+    }
+
+    if (newBet === 0) {
+      const newBets = { ...bets };
+      delete newBets[optionId];
+      setBets(newBets);
+    } else {
+      setBets({ ...bets, [optionId]: newBet });
+    }
+  };
+
+  const getTotalBetAmount = (): number => {
+    return Object.values(bets).reduce((sum, amount) => sum + amount, 0);
+  };
+
+  const handleRoll = () => {
+    setPhase(GamePhase.Rolling);
+
+    // Roll dice
     const die1 = Math.floor(Math.random() * 6) + 1;
     const die2 = Math.floor(Math.random() * 6) + 1;
-    return [die1, die2];
-  };
-
-  const evaluateOpponentTrade = (
-    userBid: number,
-    userAsk: number,
-    trueProb: number
-  ): { buyFills: number; sellFills: number } => {
-    const edge = gameConfig.opponentSkill === 'optimal' ? 2 : gameConfig.opponentSkill === 'approximate' ? 5 : 15;
-
-    let buyFills = 0;
-    let sellFills = 0;
-
-    // Opponents buy if ask is below fair value
-    if (userAsk < trueProb - edge) {
-      const volume =
-        gameConfig.opponentSkill === 'random'
-          ? Math.floor(Math.random() * 10) + 1
-          : Math.min(Math.floor((trueProb - userAsk) / 5) + 1, 10);
-      buyFills = volume;
-    }
-
-    // Opponents sell if bid is above fair value
-    if (userBid > trueProb + edge) {
-      const volume =
-        gameConfig.opponentSkill === 'random'
-          ? Math.floor(Math.random() * 10) + 1
-          : Math.min(Math.floor((userBid - trueProb) / 5) + 1, 10);
-      sellFills = volume;
-    }
-
-    return { buyFills, sellFills };
-  };
-
-  const startGame = () => {
-    if (initialBet <= 0 || initialBet > cash) {
-      setMessage('Invalid bet amount');
-      return;
-    }
-
-    setCash(cash - initialBet);
-    setPhase(CrapsPhase.ComeOut);
-    setActions([`Placed initial bet: $${initialBet}`]);
-    setMessage('Rolling come-out...');
-
-    // Auto-roll come-out after short delay
-    setTimeout(rollComeOut, 500);
-  };
-
-  const rollComeOut = () => {
-    const [die1, die2] = rollDice();
-    const sum = die1 + die2;
     setDice([die1, die2]);
-    setRollHistory([sum]);
 
-    const newActions = [...actions];
+    const sum = die1 + die2;
+    const isEven = sum % 2 === 0;
 
-    if (sum === 7 || sum === 11) {
-      // Natural win
-      const winnings = initialBet * 2;
-      setCash(cash + winnings);
-      newActions.push(`🎲 Rolled ${sum} - Natural Win! +$${winnings}`);
-      setActions(newActions);
-      setMessage(`You won $${winnings}!`);
-      setPhase(CrapsPhase.Resolved);
+    const newActions: string[] = [];
+    newActions.push(`🎲 Rolled ${die1} + ${die2} = ${sum} (${isEven ? 'Even' : 'Odd'})`);
 
-      // Save score
-      addScore({
-        id: `craps-${Date.now()}`,
-        gameType: 'craps',
-        timestamp: Date.now(),
-        difficulty,
-        finalScore: cash + winnings,
-        rounds: 1,
-        metadata: {
-          result: 'natural_win',
-          initialBet,
-        },
-      });
-    } else if (sum === 2 || sum === 3 || sum === 12) {
-      // Craps - lose
-      newActions.push(`🎲 Rolled ${sum} - Craps! Lost $${initialBet}`);
-      setActions(newActions);
-      setMessage(`Craps! You lost $${initialBet}`);
-      setPhase(CrapsPhase.Resolved);
+    let netPL = 0;
+    const totalBetAmount = getTotalBetAmount();
 
-      // Save score
-      addScore({
-        id: `craps-${Date.now()}`,
-        gameType: 'craps',
-        timestamp: Date.now(),
-        difficulty,
-        finalScore: cash,
-        rounds: 1,
-        metadata: {
-          result: 'craps',
-          initialBet,
-        },
-      });
+    // Evaluate each bet
+    Object.entries(bets).forEach(([optionId, amount]) => {
+      const option = betOptions.find((opt) => opt.id === optionId);
+      if (!option) return;
+
+      let won = false;
+
+      if (option.category === 'sum') {
+        const targetSum = parseInt(optionId.split('-')[1] ?? '0');
+        won = sum === targetSum;
+      } else if (option.category === 'parity') {
+        won = (optionId === 'even' && isEven) || (optionId === 'odd' && !isEven);
+      } else if (option.category === 'die') {
+        const targetFace = parseInt(optionId.split('-')[1] ?? '0');
+        won = die1 === targetFace || die2 === targetFace;
+      }
+
+      if (won) {
+        const winnings = amount * option.payout;
+        netPL += winnings - amount; // Net profit (winnings minus stake)
+        newActions.push(`✓ ${option.label} won: $${amount} × ${option.payout}x = $${winnings.toFixed(0)} (+$${(winnings - amount).toFixed(0)})`);
+      } else {
+        netPL -= amount;
+        newActions.push(`✗ ${option.label} lost: -$${amount}`);
+      }
+    });
+
+    if (totalBetAmount === 0) {
+      newActions.push('No bets placed this round');
     } else {
-      // Point established
-      setPoint(sum);
-      newActions.push(`🎲 Rolled ${sum} - Point established`);
-      setActions(newActions);
-      setMessage(`Point is ${sum}. Make your market on "will make point"`);
-      setPhase(CrapsPhase.Trading);
-    }
-  };
-
-  const submitMarket = () => {
-    if (bid == null || ask == null) {
-      setMessage('Please enter both bid and ask');
-      return;
-    }
-    if (bid >= ask) {
-      setMessage('Bid must be less than ask');
-      return;
-    }
-    if (bid < 0 || ask > 100) {
-      setMessage('Prices must be between 0 and 100');
-      return;
+      newActions.push(`Round ${round} P&L: ${netPL >= 0 ? '+' : ''}$${netPL.toFixed(0)}`);
     }
 
-    const trueProb = calculatePointProbability(point!);
-    const { buyFills, sellFills } = evaluateOpponentTrade(bid, ask, trueProb);
-
-    const newActions = [...actions];
-    let newCash = cash;
-    let newContracts = longContracts;
-
-    // User sells (opponents buy from user's ask)
-    if (buyFills > 0) {
-      newCash += buyFills * ask;
-      newContracts -= buyFills;
-      newActions.push(`✓ Sold ${buyFills} contracts @${ask}`);
-    }
-
-    // User buys (opponents sell to user's bid)
-    if (sellFills > 0) {
-      newCash -= sellFills * bid;
-      newContracts += sellFills;
-      newActions.push(`✓ Bought ${sellFills} contracts @${bid}`);
-    }
-
-    if (buyFills === 0 && sellFills === 0) {
-      newActions.push('✗ No trades (market not attractive)');
-    }
-
+    const newCash = cash + netPL;
     setCash(newCash);
-    setLongContracts(newContracts);
-    setActions(newActions);
-    setBid(null);
-    setAsk(null);
-    setMessage('Market submitted. Rolling dice...');
-    setPhase(CrapsPhase.Point);
+    setActions([...newActions, ...actions]);
 
-    // Auto-roll after short delay
-    setTimeout(rollForPoint, 500);
-  };
+    // Check if game over
+    if (newCash <= 0) {
+      newActions.push('💀 Game Over - Out of cash!');
+      setPhase(GamePhase.Result);
 
-  const rollForPoint = () => {
-    const [die1, die2] = rollDice();
-    const sum = die1 + die2;
-    setDice([die1, die2]);
-    setRollHistory([...rollHistory, sum]);
-
-    const newActions = [...actions];
-
-    if (sum === point) {
-      // Made the point!
-      const initialWinnings = initialBet * 2;
-      const contractSettlement = longContracts * 100;
-      const totalWinnings = initialWinnings + contractSettlement;
-      const newCash = cash + totalWinnings;
-
-      newActions.push(`🎲 Rolled ${sum} - Point Made!`);
-      newActions.push(`Initial bet payout: +$${initialWinnings}`);
-      newActions.push(`Contract settlement: ${longContracts} × 100 = $${contractSettlement}`);
-      newActions.push(`Total: +$${totalWinnings}`);
-
-      setCash(newCash);
-      setActions(newActions);
-      setMessage(`Point made! Total winnings: $${totalWinnings}`);
-      setPhase(CrapsPhase.Resolved);
-
-      // Save score
       addScore({
         id: `craps-${Date.now()}`,
         gameType: 'craps',
         timestamp: Date.now(),
         difficulty,
-        finalScore: newCash,
-        rounds: rollHistory.length + 1,
+        finalScore: 0,
+        rounds: round,
         metadata: {
-          result: 'point_made',
-          point,
-          initialBet,
-          contracts: longContracts,
-        },
-      });
-    } else if (sum === 7) {
-      // Seven out!
-      const contractSettlement = longContracts * 100;
-      const newCash = cash - contractSettlement;
-
-      newActions.push(`🎲 Rolled 7 - Seven Out!`);
-      newActions.push(`Lost initial bet: -$${initialBet}`);
-      newActions.push(`Contract settlement: ${longContracts} × 0 = $${-contractSettlement}`);
-      newActions.push(`Total loss: $${initialBet + contractSettlement}`);
-
-      setCash(newCash);
-      setActions(newActions);
-      setMessage(`Seven out! Total loss: $${initialBet + contractSettlement}`);
-      setPhase(CrapsPhase.Resolved);
-
-      // Save score
-      addScore({
-        id: `craps-${Date.now()}`,
-        gameType: 'craps',
-        timestamp: Date.now(),
-        difficulty,
-        finalScore: newCash,
-        rounds: rollHistory.length + 1,
-        metadata: {
-          result: 'seven_out',
-          point,
-          initialBet,
-          contracts: longContracts,
+          reason: 'bankrupt',
         },
       });
     } else {
-      // Continue rolling
-      newActions.push(`🎲 Rolled ${sum} - Keep rolling`);
-      setActions(newActions);
-      setMessage(`Rolled ${sum}. Make another market or roll again.`);
-      setPhase(CrapsPhase.Trading);
+      // Continue to next round
+      setTimeout(() => {
+        setRound(round + 1);
+        startBettingPhase();
+      }, 3000);
     }
   };
 
-  const skipTrading = () => {
-    setMessage('Skipping market making. Rolling...');
-    setPhase(CrapsPhase.Point);
-    setTimeout(rollForPoint, 500);
+  const endGame = () => {
+    setPhase(GamePhase.Result);
+
+    addScore({
+      id: `craps-${Date.now()}`,
+      gameType: 'craps',
+      timestamp: Date.now(),
+      difficulty,
+      finalScore: cash,
+      rounds: round,
+      metadata: {
+        reason: 'voluntary_end',
+      },
+    });
   };
 
   const resetGame = () => {
-    setPhase(CrapsPhase.Betting);
-    setCash(gameConfig.initialCash);
-    setInitialBet(100);
-    setPoint(null);
-    setDice([1, 1]);
-    setRollHistory([]);
-    setBid(null);
-    setAsk(null);
-    setLongContracts(0);
-    setActions([]);
-    setMessage('');
     setGameNumber(gameNumber + 1);
   };
 
-  const probability = point ? calculatePointProbability(point) : 50;
-
   return (
     <GameLayout
-      title="Craps with Bonus"
-      description="Play craps with a twist: make markets on whether you'll make your point!"
+      title="Craps Betting Board"
+      description="Identify +EV bets quickly before time runs out!"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sidebar */}
         <aside className="space-y-6">
           <GameStats
             cash={cash}
-            positions={longContracts}
-            round={rollHistory.length}
-            maxRounds={rollHistory.length}
+            positions={0}
+            round={round}
+            maxRounds={round}
             additionalStats={{
-              Point: point ?? '-',
-              'Win Prob': point ? `${probability}%` : '-',
+              'Total Bets': `$${getTotalBetAmount()}`,
+              'Time Left': timeLeft === null ? '∞' : `${timeLeft}s`,
             }}
           />
 
@@ -354,11 +357,15 @@ export default function Craps() {
                 changeDifficulty(d);
                 resetGame();
               }}
-              disabled={phase !== CrapsPhase.Betting && phase !== CrapsPhase.Resolved}
+              disabled={phase !== GamePhase.Result && round > 1}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              {gameConfig.opponentSkill} opponents, ±{gameConfig.marketWidth} edge
-            </p>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              {gameConfig.timerSeconds === null
+                ? 'Infinite time, random payouts'
+                : gameConfig.minTimer
+                ? `${gameConfig.minTimer}-${gameConfig.maxTimer}s timer, bear market`
+                : `${gameConfig.timerSeconds}s timer, mixed market`}
+            </div>
           </UICard>
 
           <ScoreBoard gameType="craps" />
@@ -367,104 +374,199 @@ export default function Craps() {
         {/* Main game area */}
         <main className="lg:col-span-2 space-y-6">
           {/* Dice Display */}
-          <UICard>
-            <h3 className="font-semibold text-foreground mb-4">Dice</h3>
-            <div className="flex gap-4 items-center justify-center py-6">
-              {dice.map((die, index) => (
-                <div
-                  key={index}
-                  className="w-20 h-20 bg-white dark:bg-gray-100 border-2 border-gray-400 rounded-lg shadow-lg flex items-center justify-center text-4xl font-bold text-gray-800"
-                >
-                  {die}
+          {phase !== GamePhase.Betting && (
+            <UICard>
+              <h3 className="font-semibold text-foreground mb-4">Dice Roll</h3>
+              <div className="flex gap-4 items-center justify-center py-6">
+                {dice.map((die, index) => (
+                  <div
+                    key={index}
+                    className="w-20 h-20 bg-white dark:bg-gray-100 border-2 border-gray-400 rounded-lg shadow-lg flex items-center justify-center text-4xl font-bold text-gray-800"
+                  >
+                    {die}
+                  </div>
+                ))}
+                <div className="text-4xl font-bold text-primary">
+                  = {dice[0] + dice[1]}
                 </div>
-              ))}
-              <div className="text-4xl font-bold text-primary">
-                = {dice[0] + dice[1]}
               </div>
-            </div>
-            {rollHistory.length > 0 && (
-              <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                Roll history: {rollHistory.join(', ')}
-              </div>
-            )}
-          </UICard>
+            </UICard>
+          )}
 
-          {/* Game Controls */}
-          <UICard>
-            <div className="space-y-4">
-              {phase === CrapsPhase.Betting && (
-                <>
-                  <h3 className="font-semibold text-foreground">Place Your Bet</h3>
-                  <Input
-                    type="number"
-                    label="Initial Bet Amount"
-                    value={initialBet}
-                    onChange={(val) => setInitialBet(Number(val) || 100)}
-                    placeholder="Bet amount"
-                  />
-                  <Button onClick={startGame} className="w-full">
-                    Roll Come-Out
-                  </Button>
-                </>
-              )}
-
-              {phase === CrapsPhase.Trading && point && (
-                <>
+          {/* Betting Board */}
+          {phase === GamePhase.Betting && (
+            <UICard>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
                   <h3 className="font-semibold text-foreground">
-                    Make Market on "Will Make Point {point}"
+                    Place Your Bets - Round {round}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Contract pays 100 if point is made, 0 if seven-out. True
-                    probability: ~{probability}%
-                  </p>
+                  {timeLeft !== null && (
+                    <div
+                      className={`text-2xl font-bold ${
+                        timeLeft <= 3 ? 'text-danger animate-pulse' : 'text-primary'
+                      }`}
+                    >
+                      {timeLeft}s
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Payouts shown are for $100 bets. Use +/- to adjust your bet amount.
+                </p>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input
-                      type="number"
-                      label="Bid (You Buy)"
-                      placeholder="0-100"
-                      value={bid ?? ''}
-                      onChange={(val) => setBid(Number(val) || null)}
-                    />
-                    <Input
-                      type="number"
-                      label="Ask (You Sell)"
-                      placeholder="0-100"
-                      value={ask ?? ''}
-                      onChange={(val) => setAsk(Number(val) || null)}
-                    />
+                {/* Sum Bets */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    Sum Bets
+                  </h4>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                    {betOptions
+                      .filter((opt) => opt.category === 'sum')
+                      .map((option) => (
+                        <div
+                          key={option.id}
+                          className="p-3 border-2 border-border bg-card rounded-lg"
+                        >
+                          <div className="text-xs font-semibold text-center mb-1">
+                            {option.label}
+                          </div>
+                          <div className="text-sm font-bold text-center text-primary mb-2">
+                            ${Math.round(100 * option.payout)}
+                          </div>
+                          <div className="flex items-center justify-center gap-1">
+                            <button
+                              onClick={() => adjustBet(option.id, -BET_INCREMENT)}
+                              className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-bold"
+                            >
+                              -
+                            </button>
+                            <div className="text-xs font-semibold min-w-[40px] text-center">
+                              ${bets[option.id] ?? 0}
+                            </div>
+                            <button
+                              onClick={() => adjustBet(option.id, BET_INCREMENT)}
+                              className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-bold"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                   </div>
+                </div>
 
-                  <div className="flex gap-2">
-                    <Button onClick={submitMarket} className="flex-1">
-                      Submit Market & Roll
-                    </Button>
-                    <Button onClick={skipTrading} variant="secondary" className="flex-1">
-                      Skip & Roll
-                    </Button>
+                {/* Even/Odd Bets */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    Parity Bets
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {betOptions
+                      .filter((opt) => opt.category === 'parity')
+                      .map((option) => (
+                        <div
+                          key={option.id}
+                          className="p-4 border-2 border-border bg-card rounded-lg"
+                        >
+                          <div className="text-sm font-semibold text-center mb-1">
+                            {option.label}
+                          </div>
+                          <div className="text-lg font-bold text-center text-primary mb-2">
+                            ${Math.round(100 * option.payout)}
+                          </div>
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => adjustBet(option.id, -BET_INCREMENT)}
+                              className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-lg font-bold"
+                            >
+                              -
+                            </button>
+                            <div className="text-sm font-semibold min-w-[60px] text-center">
+                              ${bets[option.id] ?? 0}
+                            </div>
+                            <button
+                              onClick={() => adjustBet(option.id, BET_INCREMENT)}
+                              className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-lg font-bold"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                   </div>
-                </>
-              )}
+                </div>
 
-              {phase === CrapsPhase.Resolved && (
-                <div className="text-center space-y-4 py-6">
-                  <div className="text-2xl font-bold text-success">Game Complete!</div>
-                  <div className="text-lg text-foreground">
-                    Final Cash: ${cash.toLocaleString()}
+                {/* Die Face Bets */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    Die Face Bets (at least one die)
+                  </h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                    {betOptions
+                      .filter((opt) => opt.category === 'die')
+                      .map((option) => (
+                        <div
+                          key={option.id}
+                          className="p-3 border-2 border-border bg-card rounded-lg"
+                        >
+                          <div className="text-xs font-semibold text-center mb-1">
+                            {option.label}
+                          </div>
+                          <div className="text-sm font-bold text-center text-primary mb-2">
+                            ${Math.round(100 * option.payout)}
+                          </div>
+                          <div className="flex items-center justify-center gap-1">
+                            <button
+                              onClick={() => adjustBet(option.id, -BET_INCREMENT)}
+                              className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-bold"
+                            >
+                              -
+                            </button>
+                            <div className="text-xs font-semibold min-w-[40px] text-center">
+                              ${bets[option.id] ?? 0}
+                            </div>
+                            <button
+                              onClick={() => adjustBet(option.id, BET_INCREMENT)}
+                              className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-bold"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                   </div>
-                  <Button onClick={resetGame} variant="primary" className="w-full">
-                    Play Again
+                </div>
+
+                <div className="flex gap-2 pt-4 border-t border-border">
+                  <Button onClick={handleRoll} className="flex-1">
+                    Roll Dice ({getTotalBetAmount() === 0 ? 'Skip Round' : `Bet $${getTotalBetAmount()}`})
+                  </Button>
+                  <Button onClick={endGame} variant="secondary">
+                    Cash Out
                   </Button>
                 </div>
-              )}
+              </div>
+            </UICard>
+          )}
 
-              {message && (
-                <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-900 dark:text-blue-200">
-                  {message}
+          {/* Game Over */}
+          {phase === GamePhase.Result && (
+            <UICard>
+              <div className="text-center space-y-4 py-6">
+                <div className="text-2xl font-bold text-success">Game Complete!</div>
+                <div className="text-lg text-foreground">
+                  Final Cash: ${cash.toLocaleString()}
                 </div>
-              )}
-            </div>
-          </UICard>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Rounds Played: {round}
+                </div>
+                <Button onClick={resetGame} variant="primary" className="w-full">
+                  Play Again
+                </Button>
+              </div>
+            </UICard>
+          )}
 
           <ActionHistory actions={actions} maxHeight="max-h-96" />
         </main>

@@ -18,8 +18,10 @@ export interface DifficultyConfig {
   };
   craps: {
     initialCash: number;
-    opponentSkill: 'random' | 'approximate' | 'optimal';
-    marketWidth: number; // How tight markets need to be for fills
+    timerSeconds: number | null; // null = infinite, number = countdown timer
+    minTimer?: number; // For random timer (hard mode)
+    maxTimer?: number; // For random timer (hard mode)
+    marketType: 'random' | 'mixed' | 'bear'; // bear = all bad payouts
   };
 }
 
@@ -41,9 +43,9 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
       tradingVolume: 5,
     },
     craps: {
-      initialCash: 5000,
-      opponentSkill: 'random',
-      marketWidth: 20,
+      initialCash: 10000,
+      timerSeconds: null, // Infinite time
+      marketType: 'random', // Some good, some bad payouts
     },
   },
   [Difficulty.Medium]: {
@@ -63,9 +65,9 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
       tradingVolume: 10,
     },
     craps: {
-      initialCash: 5000,
-      opponentSkill: 'approximate',
-      marketWidth: 10,
+      initialCash: 10000,
+      timerSeconds: 10, // 10 second timer
+      marketType: 'mixed', // Mostly bad, occasional good payouts
     },
   },
   [Difficulty.Hard]: {
@@ -85,9 +87,11 @@ export const DIFFICULTY_CONFIGS: Record<Difficulty, DifficultyConfig> = {
       tradingVolume: 20,
     },
     craps: {
-      initialCash: 5000,
-      opponentSkill: 'optimal',
-      marketWidth: 5,
+      initialCash: 10000,
+      timerSeconds: 5, // Base timer (will be overridden by random)
+      minTimer: 2, // Random timer range
+      maxTimer: 5,
+      marketType: 'bear', // All bad payouts (bear market)
     },
   },
 };
