@@ -29,6 +29,8 @@ If I helped you ace your interviews or you wanna help me out, you can [support m
 
 ## Practice Here!
 
+- [Geodesic quant practice](https://geodesicpartners.co.uk/quant-prep): timed probability, brainteaser and market making questions with worked answers.
+
 I've finally made a website with some Quant games for you to practice some market making, gambling and market simulation skills.
 
 https://mikinty.github.io/Trading-Interview-Questions/
